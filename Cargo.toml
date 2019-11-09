@@ -3,3 +3,5 @@ name = "progress_bar"
 version = "0.1.0"
 authors = ["Mubelotix <unbeliever.in.time@gmail.com>"]
 edition = "2018"
+license = "MIT"
+description = "A crate that allows you to display a progress bar (same style than the cargo progress bar)."
