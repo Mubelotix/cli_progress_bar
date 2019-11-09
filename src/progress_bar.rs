@@ -1,6 +1,6 @@
+//! The main module
+
 use crate::color::*;
-use std::thread;
-use std::time;
 
 pub struct ProgressBar {
     max: usize,
@@ -12,6 +12,36 @@ pub struct ProgressBar {
 }
 
 impl ProgressBar {
+    /// Creates a progress bar with the total number of actions.  
+    /// You will need to call inc method when an action is completed and the bar progression will be incremented by 1.  
+    /// Don't print things with print macro while the bar is running; use the print_info method instead.  
+    /// 
+    /// Example:
+    /// 
+    /// ```
+    /// use progress_bar::progress_bar::ProgressBar;
+    /// use progress_bar::color::{Color, Style};
+    /// use std::{thread, time};
+    /// 
+    /// // if you have 81 pages to load
+    /// let mut progress_bar = ProgressBar::new(81);
+    /// progress_bar.set_action("Loading", Color::Blue, Style::Bold);
+    ///
+    /// for i in 0..81 {
+    ///     // load page
+    ///     thread::sleep(time::Duration::from_millis(50));
+    /// 
+    ///     // log the result
+    ///     if i == 14 {
+    ///         progress_bar.print_info("Failed", "https://zefzef.zef", Color::Red, Style::Blink);
+    ///     } else {
+    ///         progress_bar.print_info("Success", "https://example.com", Color::Red, Style::Blink);
+    ///     }
+    ///     
+    ///     // update the progression by 1
+    ///     progress_bar.inc();
+    /// }
+    /// ```
     pub fn new(max: usize) -> Self {
         ProgressBar {
             max,
@@ -37,21 +67,25 @@ impl ProgressBar {
         }
     }
 
+    /// Set the width of the progress bar in caracters in console (default: 50)
     pub fn set_width(&mut self, w: usize) {
         self.width = w;
         self.display();
     }
 
+    /// Set the progression
     pub fn set_progression(&mut self, p: usize) {
         self.progression = p;
         self.display();
     }
 
+    /// Increment the progression by 1
     pub fn inc(&mut self) {
         self.progression += 1;
         self.display();
     }
 
+    /// Set the global action displayed before the progress bar.
     pub fn set_action(&mut self, a: &str, c: Color, s: Style) {
         self.action = ProgressBar::set_good_size(a);
         self.action_color = c;
@@ -59,14 +93,16 @@ impl ProgressBar {
         self.display();
     }
 
+    /// Log something
     pub fn print_info(&mut self, info_name: &str, text: &str, info_color: Color, info_style: Style) {
         let info_name = ProgressBar::set_good_size(info_name);
         println!("{}{}{}\x1B[0m {}\x1B[K", info_style, info_color, info_name, text);
         self.display();
     }
 
+    /// Display the bar
     pub fn display(&self) {
-        print!("{}{}{}\x1B[0m", self.action_style, self.action_color, self.action);
+        print!("{}{}{}\x1B[0m\x1B[K", self.action_style, self.action_color, self.action);
 
         print!(" [");
         for i in 0..self.width {

@@ -1,3 +1,5 @@
+//! A module containing style and color enums.
+
 use std::fmt;
 
 #[derive(Debug, Copy, Clone)]
