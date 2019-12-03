@@ -41,6 +41,9 @@ impl ProgressBar {
     ///     // update the progression by 1
     ///     progress_bar.inc();
     /// }
+    /// progress_bar.print_final_info("Loading", "Load complete", Color::LightGreen, Style::Bold);
+    /// // Or, to leave the progress bar at 100%:
+    /// // progress_bar.finalize();
     /// ```
     pub fn new(max: usize) -> Self {
         ProgressBar {
@@ -93,6 +96,13 @@ impl ProgressBar {
         self.display();
     }
 
+    /// Log something, without display update
+    pub fn print_final_info(&mut self, info_name: &str, text: &str, info_color: Color, info_style: Style) {
+        let info_name = ProgressBar::set_good_size(info_name);
+        println!("{}{}{}\x1B[0m {}\x1B[K", info_style, info_color, info_name, text);
+        self.progression = 0;
+    }
+
     /// Log something
     pub fn print_info(&mut self, info_name: &str, text: &str, info_color: Color, info_style: Style) {
         let info_name = ProgressBar::set_good_size(info_name);
@@ -119,5 +129,10 @@ impl ProgressBar {
         print!("] {}/{}", self.progression, self.max);
         print!("\n\x1B[1A")
     }
-
+    
+    /// Mark the end of the progress bar - updates will make a 'new' bar
+    pub fn finalize(&mut self) {
+        self.progression = 0;
+        println!("");
+    }
 }
