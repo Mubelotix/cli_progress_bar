@@ -1,6 +1,8 @@
 //! The main module
 
 use crate::color::*;
+use std::io;
+use std::io::Write;
 
 pub struct ProgressBar {
     max: usize,
@@ -127,7 +129,10 @@ impl ProgressBar {
             }
         }
         print!("] {}/{}", self.progression, self.max);
-        print!("\n\x1B[1A")
+        print!("\n\x1B[1A");
+
+        #[allow(unused_must_use)]
+        { io::stdout().flush(); }
     }
     
     /// Mark the end of the progress bar - updates will make a 'new' bar
