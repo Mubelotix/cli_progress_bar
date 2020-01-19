@@ -1,4 +1,4 @@
-//! This crate allows you to display progress bar in a terminal.
+//! This crate allows you to display a progress bar in a terminal.
 //! 
 //! # Example
 //! 
@@ -27,7 +27,7 @@
 //! }
 //! ```
 //! 
-//! ![image showing the output of the code above](https://mubelotix.dev/images/progress_bar_example1.png "Output")
+//! ![image displaying the output of the code above](https://mubelotix.dev/images/progress_bar_example1.png "Output")
 
 pub mod progress_bar;
 pub mod color;
