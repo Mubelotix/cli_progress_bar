@@ -21,7 +21,7 @@ for i in 0..81 {
     if i == 14 {
         progress_bar.print_info("Failed", "https://zefzef.zef", Color::Red, Style::Normal);
     } else if i == 41 {
-       rogress_bar.print_info("Success", "https://example.com", Color::Green, Style::Bold);
+       progress_bar.print_info("Success", "https://example.com", Color::Green, Style::Bold);
     }
 
     // update the progression by 1
