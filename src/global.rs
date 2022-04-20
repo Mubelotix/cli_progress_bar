@@ -61,8 +61,8 @@ pub fn print_progress_bar_final_info(info_name: &str, text: &str, info_color: Co
 }
 
 pub fn finalize_progress_bar() {
-    match *CURRENT_PROGRESS_BAR.lock().unwrap() {
-        Some(ref mut progress_bar) => progress_bar.finalize(),
+    match CURRENT_PROGRESS_BAR.lock().unwrap().take() {
+        Some(mut progress_bar) => progress_bar.finalize(),
         None => eprintln!("ERROR: Unable to finalize progress bar (no progress bar)"),
     }
 }
