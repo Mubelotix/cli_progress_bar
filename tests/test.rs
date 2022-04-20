@@ -1,4 +1,4 @@
-use progress_bar::progress_bar::ProgressBar;
+use progress_bar::pb::ProgressBar;
 use progress_bar::color::{Color, Style};
 use std::time;
 use std::thread;

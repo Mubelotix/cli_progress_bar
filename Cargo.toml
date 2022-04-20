@@ -8,3 +8,6 @@ description = "A crate that allows you to display a progress bar (same style tha
 readme = "README.md"
 repository = "https://github.com/Mubelotix/cli_progress_bar"
 categories = ["command-line-interface"]
+
+[dependencies]
+lazy_static = "1.4"

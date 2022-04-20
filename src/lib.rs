@@ -29,6 +29,10 @@
 //! 
 //! ![image displaying the output of the code above](https://mubelotix.dev/images/progress_bar_example1.png "Output")
 
-pub mod progress_bar;
+pub mod pb;
 pub mod color;
+pub mod singleton;
+
+pub use color::*;
+pub use singleton::*;
 
