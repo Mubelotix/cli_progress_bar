@@ -5,7 +5,7 @@
 //! # Example
 //! 
 //! ```
-//! use progress_bar::*
+//! use progress_bar::*;
 //! # use std::{thread::sleep, time::Duration};
 //! 
 //! // if you have 81 pages to load
@@ -37,7 +37,7 @@ pub mod pb;
 /// Includes the [`Color`] and [`Style`] enums.
 pub mod style;
 /// Includes functions to use a global progress bar (recommended).
-pub mod singleton;
+pub mod global;
 
 pub use style::*;
-pub use singleton::*;
+pub use global::*;
