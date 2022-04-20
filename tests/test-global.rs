@@ -2,20 +2,28 @@ use progress_bar::*;
 
 #[test]
 fn test() {
-    init_progress_bar(100);
+    use progress_bar::*;
+    use std::thread::sleep;
+    use std::time::Duration;
+
+    // if you have 81 pages to load
+    init_progress_bar(81);
     set_progress_bar_action("Loading", Color::Blue, Style::Bold);
     
-    for i in 0..100 {
-        inc_progress_bar();
+    for i in 0..81 {
+        // load page
+        sleep(Duration::from_millis(100));
+    
+        // log the result
         if i == 14 {
-            print_progress_bar_info("Error", "loading something", Color::Red, Style::Blink)
-        } else if i == 48 {
-            print_progress_bar_info("Found", "something", Color::Green, Style::Bold)
-        } else if i == 75 {
-            print_progress_bar_info("Warning", "potential error", Color::Yellow, Style::Normal)
+            print_progress_bar_info("Failed", "to load https://zefzef.zef", Color::Red, Style::Normal);
+        } else if i == 41 {
+            print_progress_bar_info("Success", "loading https://example.com", Color::Green, Style::Bold);
         }
-        std::thread::sleep(std::time::Duration::from_millis(50));
+    
+        // update the progression by 1
+        inc_progress_bar();
     }
-
+    
     finalize_progress_bar();
 }

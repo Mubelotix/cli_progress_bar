@@ -19,9 +19,9 @@ for i in 0..81 {
 
     // log the result
     if i == 14 {
-        print_progress_bar_info("Failed", "https://zefzef.zef", Color::Red, Style::Normal);
+        print_progress_bar_info("Failed", "to load https://zefzef.zef", Color::Red, Style::Normal);
     } else if i == 41 {
-        print_progress_bar_info("Success", "https://example.com", Color::Green, Style::Bold);
+        print_progress_bar_info("Success", "loading https://example.com", Color::Green, Style::Bold);
     }
 
     // update the progression by 1
@@ -31,6 +31,6 @@ for i in 0..81 {
 finalize_progress_bar();
 ```
 
-![image displaying the output of the code above](./media/progress_bar_example1.png "Output")
+![image displaying the output of the code above](https://cdn.discordapp.com/attachments/694923348844609597/966323739056828436/unknown.png "Output")
 
 License: MIT
