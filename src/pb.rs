@@ -1,6 +1,4 @@
-//! The main module
-
-use crate::color::*;
+use crate::style::*;
 use std::io;
 use std::io::Write;
 
@@ -18,7 +16,7 @@ impl ProgressBar {
     /// You will need to call inc method when an action is completed and the bar progression will be incremented by 1.  
     /// Don't print things with print macro while the bar is running; use the print_info method instead.  
     /// 
-    /// Example:
+    /// # Example
     /// 
     /// ```
     /// use progress_bar::progress_bar::ProgressBar;

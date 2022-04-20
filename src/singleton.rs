@@ -1,5 +1,5 @@
 use std::sync::Mutex;
-use crate::{color::{Color, Style}, pb::ProgressBar};
+use crate::{style::{Color, Style}, pb::ProgressBar};
 
 lazy_static::lazy_static! {
     pub static ref CURRENT_PROGRESS_BAR: Mutex<Option<ProgressBar>> = Mutex::new(None);

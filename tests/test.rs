@@ -1,5 +1,5 @@
 use progress_bar::pb::ProgressBar;
-use progress_bar::color::{Color, Style};
+use progress_bar::style::{Color, Style};
 use std::time;
 use std::thread;
 
