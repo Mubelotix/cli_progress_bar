@@ -59,16 +59,16 @@ impl ProgressBar {
     }
 
     fn set_good_size(text: &str) -> String {
-        if text.len() == 12 {
-            text.to_string()
-        } else if text.len() > 12 {
-            text[..12].to_string()
-        } else {
-            let mut text = text.to_string();
-            while text.len() < 12 {
-                text.insert(0, ' ');
-            }
-            text
+        match text.len() {
+            12 => text.to_string(),
+            len if len > 12 => text[..12].to_string(),
+            _ => {
+                let mut text = text.to_string();
+                while text.len() < 12 {
+                    text.insert(0, ' ');
+                }
+                text
+            },
         }
     }
 
@@ -138,6 +138,6 @@ impl ProgressBar {
     /// Mark the end of the progress bar - updates will make a 'new' bar
     pub fn finalize(&mut self) {
         self.progression = 0;
-        println!("");
+        println!();
     }
 }
