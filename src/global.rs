@@ -39,6 +39,13 @@ pub fn set_progress_bar_width(width: usize) {
     }
 }
 
+pub fn set_progress_bar_max(max: usize) {
+    match *CURRENT_PROGRESS_BAR.lock().unwrap() {
+        Some(ref mut progress_bar) => progress_bar.set_max(max),
+        None => eprintln!("ERROR: Unable to set progress bar max (no progress bar)"),
+    }
+}
+
 pub fn print_progress_bar_info(info_name: &str, text: &str, info_color: Color, info_style: Style) {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
         Some(ref mut progress_bar) => progress_bar.print_info(info_name, text, info_color, info_style),

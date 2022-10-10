@@ -82,6 +82,12 @@ impl ProgressBar {
         self.display();
     }
 
+    /// Set the max progression
+    pub fn set_max(&mut self, m: usize) {
+        self.max = m;
+        self.display();
+    }
+
     /// Increment the progression by 1
     pub fn inc(&mut self) {
         self.progression += 1;
