@@ -1,5 +1,5 @@
 use std::sync::Mutex;
-use crate::{style::{Color, Style}, pb::ProgressBar};
+use crate::{style::{Color, Style, Mode}, pb::ProgressBar};
 
 lazy_static::lazy_static! {
     pub static ref CURRENT_PROGRESS_BAR: Mutex<Option<ProgressBar>> = Mutex::new(None);
@@ -46,9 +46,9 @@ pub fn print_progress_bar_info(info_name: &str, text: &str, info_color: Color, i
     }
 }
 
-pub fn set_progress_bar_action(action: &str, color: Color, style: Style) {
+pub fn set_progress_bar_action(action: &str, color: Color, style: Style, mode: Mode) {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
-        Some(ref mut progress_bar) => progress_bar.set_action(action, color, style),
+        Some(ref mut progress_bar) => progress_bar.set_action(action, color, style, mode),
         None => eprintln!("ERROR: Unable to set progress bar action (no progress bar)"),
     }
 }

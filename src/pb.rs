@@ -9,6 +9,7 @@ pub struct ProgressBar {
     action: String,
     action_color: Color,
     action_style: Style,
+    action_mode: Mode,
 }
 
 impl ProgressBar {
@@ -20,12 +21,12 @@ impl ProgressBar {
     /// 
     /// ```
     /// use progress_bar::progress_bar::ProgressBar;
-    /// use progress_bar::color::{Color, Style};
+    /// use progress_bar::color::{Color, Style, Mode};
     /// use std::{thread, time};
     /// 
     /// // if you have 81 pages to load
     /// let mut progress_bar = ProgressBar::new(81);
-    /// progress_bar.set_action("Loading", Color::Blue, Style::Bold);
+    /// progress_bar.set_action("Loading", Color::Blue, Style::Bold, Mode::Number);
     ///
     /// for i in 0..81 {
     ///     // load page
@@ -52,7 +53,8 @@ impl ProgressBar {
             width: 50,
             action: String::new(),
             action_color: Color::Black,
-            action_style: Style::Normal
+            action_style: Style::Normal,
+            action_mode: Mode::Number
         }
     }
 
@@ -89,10 +91,11 @@ impl ProgressBar {
     }
 
     /// Set the global action displayed before the progress bar.
-    pub fn set_action(&mut self, a: &str, c: Color, s: Style) {
+    pub fn set_action(&mut self, a: &str, c: Color, s: Style, m: Mode) {
         self.action = ProgressBar::set_good_size(a);
         self.action_color = c;
         self.action_style = s;
+        self.action_mode = m;
         self.display();
     }
 
@@ -126,7 +129,16 @@ impl ProgressBar {
                 print!(" ");
             }
         }
-        print!("] {}/{}", self.progression, self.max);
+        print!("] ");
+        match self.action_mode {
+            Mode::Number => {
+                print!("{}/{}", self.progression, self.max);
+            }
+            Mode::Percentage => {
+                print!("{:.2}%", (self.progression as f32 / self.max as f32) * 100.0);
+            }
+            _ => {}
+        }
         print!("\n\x1B[1A");
 
         #[allow(unused_must_use)]
