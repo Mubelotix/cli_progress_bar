@@ -91,7 +91,15 @@ impl ProgressBar {
     }
 
     /// Set the global action displayed before the progress bar.
-    pub fn set_action(&mut self, a: &str, c: Color, s: Style, m: Mode) {
+    pub fn set_action(&mut self, a: &str, c: Color, s: Style) {
+        self.action = ProgressBar::set_good_size(a);
+        self.action_color = c;
+        self.action_style = s;
+        self.action_mode = Mode::Number;
+        self.display();
+    }
+
+    pub fn set_action_with_mode(&mut self, a: &str, c: Color, s: Style, m: Mode) {
         self.action = ProgressBar::set_good_size(a);
         self.action_color = c;
         self.action_style = s;

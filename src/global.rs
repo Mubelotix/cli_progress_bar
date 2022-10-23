@@ -46,9 +46,16 @@ pub fn print_progress_bar_info(info_name: &str, text: &str, info_color: Color, i
     }
 }
 
-pub fn set_progress_bar_action(action: &str, color: Color, style: Style, mode: Mode) {
+pub fn set_progress_bar_action(action: &str, color: Color, style: Style) {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
-        Some(ref mut progress_bar) => progress_bar.set_action(action, color, style, mode),
+        Some(ref mut progress_bar) => progress_bar.set_action(action, color, style),
+        None => eprintln!("ERROR: Unable to set progress bar action (no progress bar)"),
+    }
+}
+
+pub fn set_progress_bar_action_with_mode(action: &str, color: Color, style: Style, mode: Mode) {
+    match *CURRENT_PROGRESS_BAR.lock().unwrap() {
+        Some(ref mut progress_bar) => progress_bar.set_action_with_mode(action, color, style, mode),
         None => eprintln!("ERROR: Unable to set progress bar action (no progress bar)"),
     }
 }
