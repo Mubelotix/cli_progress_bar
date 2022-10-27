@@ -65,6 +65,13 @@ pub fn set_progress_bar_action_with_mode(action: &str, color: Color, style: Styl
     }
 }
 
+pub fn print_progress_bar_final_info(info_name: &str, text: &str, info_color: Color, info_style: Style) {
+    match *CURRENT_PROGRESS_BAR.lock().unwrap() {
+        Some(ref mut progress_bar) => progress_bar.print_final_info(info_name, text, info_color, info_style),
+        None => eprintln!("ERROR: Unable to print progress bar final info (no progress bar)"),
+    }
+}
+
 pub fn finalize_progress_bar() {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
         Some(ref mut progress_bar) => progress_bar.finalize(),
