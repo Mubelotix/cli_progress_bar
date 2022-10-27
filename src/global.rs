@@ -1,5 +1,8 @@
+use crate::{
+    pb::ProgressBar,
+    style::{Color, Mode, Style},
+};
 use std::sync::Mutex;
-use crate::{style::{Color, Style, Mode}, pb::ProgressBar};
 
 lazy_static::lazy_static! {
     pub static ref CURRENT_PROGRESS_BAR: Mutex<Option<ProgressBar>> = Mutex::new(None);
@@ -41,7 +44,9 @@ pub fn set_progress_bar_width(width: usize) {
 
 pub fn print_progress_bar_info(info_name: &str, text: &str, info_color: Color, info_style: Style) {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
-        Some(ref mut progress_bar) => progress_bar.print_info(info_name, text, info_color, info_style),
+        Some(ref mut progress_bar) => {
+            progress_bar.print_info(info_name, text, info_color, info_style)
+        }
         None => eprintln!("ERROR: Unable to print progress bar info (no progress bar)"),
     }
 }
