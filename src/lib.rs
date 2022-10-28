@@ -30,7 +30,7 @@
 //! finalize_progress_bar();
 //! ```
 //! 
-//! ![image displaying the output of the code above](https://mubelotix.dev/images/progress_bar_example1.png "Output")
+//! ![image displaying the output of the code above](./media/progress_bar_example1.png "Output")
 
 /// Includes the [`ProgressBar`] struct.
 pub mod pb;
