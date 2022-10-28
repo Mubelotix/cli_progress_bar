@@ -72,3 +72,9 @@ impl fmt::Display for Style {
         }
     }
 }
+
+pub enum Mode {
+    Number,
+    Percentage,
+    Nothing,
+}
