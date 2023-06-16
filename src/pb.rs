@@ -1,6 +1,7 @@
 use crate::style::*;
 use std::io;
 use std::io::Write;
+use std::time::Instant;
 
 pub struct ProgressBar {
     max: usize,
@@ -9,6 +10,7 @@ pub struct ProgressBar {
     action: String,
     action_color: Color,
     action_style: Style,
+    start: Option<Instant>,
 }
 
 impl ProgressBar {
@@ -52,7 +54,16 @@ impl ProgressBar {
             width: 50,
             action: String::new(),
             action_color: Color::Black,
-            action_style: Style::Normal
+            action_style: Style::Normal,
+            start: None,
+        }
+    }
+
+    /// Same as [ProgressBar::new] but enabled ETA display.
+    pub fn new_with_eta(max: usize) -> Self {
+        ProgressBar {
+            start: Some(Instant::now()),
+            ..ProgressBar::new(max)
         }
     }
 
@@ -79,6 +90,9 @@ impl ProgressBar {
     /// Set the progression
     pub fn set_progression(&mut self, p: usize) {
         self.progression = p;
+        if self.start.is_some() {
+            self.start = Some(Instant::now());
+        }
         self.display();
     }
 
@@ -92,6 +106,17 @@ impl ProgressBar {
     pub fn inc(&mut self) {
         self.progression += 1;
         self.display();
+    }
+
+    /// **Resets progress** and enables ETA
+    pub fn enable_eta(&mut self) {
+        self.progression = 0;
+        self.start = Some(Instant::now());
+    }
+
+    /// Disables ETA
+    pub fn disable_eta(&mut self) {
+        self.start = None;
     }
 
     /// Set the global action displayed before the progress bar.
@@ -133,6 +158,32 @@ impl ProgressBar {
             }
         }
         print!("] {}/{}", self.progression, self.max);
+        if let Some(start) = self.start {
+            if self.max != 0 && self.progression != 0 && self.progression != self.max {
+                let elapsed = start.elapsed();
+                let progress_rate = self.progression as f64 / self.max as f64;
+                let inv_progress_rate = 1. - progress_rate;
+                let total_time = elapsed.as_millis() as f64 / progress_rate;
+                let remaining_time = total_time * inv_progress_rate;
+                let remaining_ms = remaining_time.ceil() as usize;
+
+                const SECS_110: usize = 110 * 1000;
+                const MINS_110: usize = 110 * 60 * 1000;
+                const HOURS_46: usize = 46 * 60 * 60 * 1000;
+
+                #[allow(overlapping_range_endpoints)]
+                #[allow(clippy::match_overlapping_arm)]
+                let eta = match remaining_ms {
+                    0..=3_000 => format!("{}ms", remaining_time.ceil() as usize),
+                    3_001..=SECS_110 => format!("{}s", (remaining_time / 1000.).ceil() as usize),
+                    SECS_110..=MINS_110 => format!("{} minutes", (remaining_time / (1000. * 60.)).ceil() as usize),
+                    MINS_110..=HOURS_46 => format!("{} hours", (remaining_time / (1000. * 60. * 60.)).ceil() as usize),
+                    _ => format!("{} days", (remaining_time / (1000. * 60. * 60. * 24.)).ceil() as usize),
+                };
+
+                print!(" (ETA {eta})");
+            }
+        }
         print!("\n\x1B[1A");
 
         #[allow(unused_must_use)]

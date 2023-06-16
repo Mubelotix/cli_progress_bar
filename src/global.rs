@@ -18,6 +18,11 @@ pub fn init_progress_bar(max: usize) {
     set_progress_bar(progress_bar);
 }
 
+pub fn init_progress_bar_with_eta(max: usize) {
+    let progress_bar = ProgressBar::new_with_eta(max);
+    set_progress_bar(progress_bar);
+}
+
 pub fn set_progress_bar_progression(progression: usize) {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
         Some(ref mut progress_bar) => progress_bar.set_progression(progression),
@@ -42,6 +47,21 @@ pub fn set_progress_bar_width(width: usize) {
 pub fn set_progress_bar_max(max: usize) {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
         Some(ref mut progress_bar) => progress_bar.set_max(max),
+        None => eprintln!("ERROR: Unable to set progress bar max (no progress bar)"),
+    }
+}
+
+/// Warning: This resets progress to 0
+pub fn enable_eta() {
+    match *CURRENT_PROGRESS_BAR.lock().unwrap() {
+        Some(ref mut progress_bar) => progress_bar.enable_eta(),
+        None => eprintln!("ERROR: Unable to set progress bar max (no progress bar)"),
+    }
+}
+
+pub fn disable_eta() {
+    match *CURRENT_PROGRESS_BAR.lock().unwrap() {
+        Some(ref mut progress_bar) => progress_bar.disable_eta(),
         None => eprintln!("ERROR: Unable to set progress bar max (no progress bar)"),
     }
 }
