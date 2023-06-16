@@ -2,6 +2,8 @@
 
 This crate allows you to display a pretty progress bar in the terminal.
 
+Able to estimate and display the remaining time.
+
 **LINUX ONLY**
 
 ## Example
