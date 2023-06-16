@@ -5,7 +5,7 @@ use std::time::Instant;
 
 pub struct ProgressBar {
     max: usize,
-    progression: usize,
+    progress: usize,
     width: usize,
     action: String,
     action_color: Color,
@@ -15,7 +15,7 @@ pub struct ProgressBar {
 
 impl ProgressBar {
     /// Creates a progress bar with the total number of actions.  
-    /// You will need to call inc method when an action is completed and the bar progression will be incremented by 1.  
+    /// You will need to call inc method when an action is completed and the bar progress will be incremented by 1.  
     /// Don't print things with print macro while the bar is running; use the print_info method instead.  
     /// 
     /// # Example
@@ -40,7 +40,7 @@ impl ProgressBar {
     ///         progress_bar.print_info("Success", "https://example.com", Color::Red, Style::Blink);
     ///     }
     ///     
-    ///     // update the progression by 1
+    ///     // increase the progress by 1
     ///     progress_bar.inc();
     /// }
     /// progress_bar.print_final_info("Loading", "Load complete", Color::LightGreen, Style::Bold);
@@ -50,7 +50,7 @@ impl ProgressBar {
     pub fn new(max: usize) -> Self {
         ProgressBar {
             max,
-            progression: 0,
+            progress: 0,
             width: 50,
             action: String::new(),
             action_color: Color::Black,
@@ -87,30 +87,35 @@ impl ProgressBar {
         self.display();
     }
 
-    /// Set the progression
+    #[deprecated(note = "Use set_progress instead")]
     pub fn set_progression(&mut self, p: usize) {
-        self.progression = p;
+        self.set_progress(p)
+    }
+
+    /// Set the progres
+    pub fn set_progress(&mut self, p: usize) {
+        self.progress = p;
         if self.start.is_some() {
             self.start = Some(Instant::now());
         }
         self.display();
     }
 
-    /// Set the max progression
+    /// Set the maximum progress
     pub fn set_max(&mut self, m: usize) {
         self.max = m;
         self.display();
     }
 
-    /// Increment the progression by 1
+    /// Increment the progress by 1
     pub fn inc(&mut self) {
-        self.progression += 1;
+        self.progress += 1;
         self.display();
     }
 
     /// **Resets progress** and enables ETA
     pub fn enable_eta(&mut self) {
-        self.progression = 0;
+        self.progress = 0;
         self.start = Some(Instant::now());
     }
 
@@ -131,7 +136,7 @@ impl ProgressBar {
     pub fn print_final_info(&mut self, info_name: &str, text: &str, info_color: Color, info_style: Style) {
         let info_name = ProgressBar::set_good_size(info_name);
         println!("{}{}{}\x1B[0m {}\x1B[K", info_style, info_color, info_name, text);
-        self.progression = 0;
+        self.progress = 0;
     }
 
     /// Log something
@@ -147,8 +152,8 @@ impl ProgressBar {
 
         print!(" [");
         for i in 0..self.width {
-            if i*self.max/self.width < self.progression {
-                if (i+1)*self.max/self.width >= self.progression {
+            if i*self.max/self.width < self.progress {
+                if (i+1)*self.max/self.width >= self.progress {
                     print!(">");
                 } else {
                     print!("=");
@@ -157,11 +162,11 @@ impl ProgressBar {
                 print!(" ");
             }
         }
-        print!("] {}/{}", self.progression, self.max);
+        print!("] {}/{}", self.progress, self.max);
         if let Some(start) = self.start {
-            if self.max != 0 && self.progression != 0 && self.progression != self.max {
+            if self.max != 0 && self.progress != 0 && self.progress != self.max {
                 let elapsed = start.elapsed();
-                let progress_rate = self.progression as f64 / self.max as f64;
+                let progress_rate = self.progress as f64 / self.max as f64;
                 let inv_progress_rate = 1. - progress_rate;
                 let total_time = elapsed.as_millis() as f64 / progress_rate;
                 let remaining_time = total_time * inv_progress_rate;
@@ -192,7 +197,7 @@ impl ProgressBar {
     
     /// Mark the end of the progress bar - updates will make a 'new' bar
     pub fn finalize(&mut self) {
-        self.progression = 0;
+        self.progress = 0;
         println!();
     }
 }

@@ -23,17 +23,22 @@ pub fn init_progress_bar_with_eta(max: usize) {
     set_progress_bar(progress_bar);
 }
 
-pub fn set_progress_bar_progression(progression: usize) {
+#[deprecated(note = "Use set_progress_bar_progress instead")]
+pub fn set_progress_bar_progression(progress: usize) {
+    set_progress_bar_progress(progress);
+}
+
+pub fn set_progress_bar_progress(progress: usize) {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
-        Some(ref mut progress_bar) => progress_bar.set_progression(progression),
-        None => eprintln!("ERROR: Unable to set progress bar progression (no progress bar)"),
+        Some(ref mut progress_bar) => progress_bar.set_progress(progress),
+        None => eprintln!("ERROR: Unable to set progress bar progress (no progress bar)"),
     }
 }
 
 pub fn inc_progress_bar() {
     match *CURRENT_PROGRESS_BAR.lock().unwrap() {
         Some(ref mut progress_bar) => progress_bar.inc(),
-        None => eprintln!("ERROR: Unable to increase progress bar progression (no progress bar)"),
+        None => eprintln!("ERROR: Unable to increase progress bar progress (no progress bar)"),
     }
 }
 

@@ -21,7 +21,7 @@ fn test() {
             print_progress_bar_info("Success", "loading https://example.com", Color::Green, Style::Bold);
         }
     
-        // update the progression by 1
+        // increase the progress by 1
         inc_progress_bar();
     }
     
