@@ -95,7 +95,7 @@ impl ProgressBar {
     /// Set the progres
     pub fn set_progress(&mut self, p: usize) {
         self.progress = p;
-        if self.start.is_some() {
+        if p == 0 && self.start.is_some() {
             self.start = Some(Instant::now());
         }
         self.display();
