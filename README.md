@@ -33,6 +33,6 @@ for i in 0..81 {
 finalize_progress_bar();
 ```
 
-![image displaying the output of the code above](https://cdn.discordapp.com/attachments/694923348844609597/966323739056828436/unknown.png "Output")
+![image displaying the output of the code above](https://raw.githubusercontent.com/Mubelotix/cli_progress_bar/refs/heads/master/media/progress_bar_example1.png "Output")
 
 License: MIT
