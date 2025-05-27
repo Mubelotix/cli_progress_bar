@@ -63,11 +63,11 @@ print_progress_bar_info("Failed", "to load https://zefzef.zef", Color::Red, Styl
 
 If you find this syntax too verbose, the crate allows you to use the progress bar as a logger directly.
 
-Enable to `log` feature to use this functionality.
+Enable to `logger` feature to use this functionality.
 
 ```toml
-# Add the log feature in your Cargo.toml
-progress_bar = { version = "*", features = ["log"] }
+# Add the logger feature in your Cargo.toml
+progress_bar = { version = "*", features = ["logger"] }
 ```
 
 ```rust
@@ -84,7 +84,7 @@ warn!("Failed to load https://zefzef.zef");
 It is also possible to set another logger as a fallback to handle calls to logging functions when no progress bar is active.
 This fallback logger also gives you control over which messages are logged, as its [log::Log::enabled] function is used even when a progress bar is active.
 
-```rust,cfg
+```rust
 use progress_bar::*;
 use env_logger::Env;
 use log::*;
