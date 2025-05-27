@@ -21,8 +21,7 @@ impl ProgressBar {
     /// # Example
     /// 
     /// ```
-    /// use progress_bar::progress_bar::ProgressBar;
-    /// use progress_bar::color::{Color, Style};
+    /// use progress_bar::{pb::ProgressBar, Color, Style};
     /// use std::{thread, time};
     /// 
     /// // if you have 81 pages to load
