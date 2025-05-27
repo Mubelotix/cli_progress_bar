@@ -1,6 +1,6 @@
 [package]
 name = "progress_bar"
-version = "1.0.6"
+version = "1.1.0"
 authors = ["Mubelotix <mubelotix@gmail.com>"]
 edition = "2018"
 license = "MIT"
@@ -10,4 +10,3 @@ repository = "https://github.com/Mubelotix/cli_progress_bar"
 categories = ["command-line-interface"]
 
 [dependencies]
-lazy_static = "1.4"

@@ -1,9 +1,7 @@
-use std::sync::Mutex;
-use crate::{style::{Color, Style}, pb::ProgressBar};
+use std::sync::{LazyLock, Mutex};
+use crate::{pb::ProgressBar, style::{Color, Style}};
 
-lazy_static::lazy_static! {
-    pub static ref CURRENT_PROGRESS_BAR: Mutex<Option<ProgressBar>> = Mutex::new(None);
-}
+pub static CURRENT_PROGRESS_BAR: LazyLock<Mutex<Option<ProgressBar>>> = LazyLock::new(|| Mutex::new(None));
 
 pub fn has_progress_bar() -> bool {
     CURRENT_PROGRESS_BAR.lock().unwrap().is_some()
