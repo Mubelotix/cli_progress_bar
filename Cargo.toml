@@ -2,7 +2,7 @@
 name = "progress_bar"
 version = "1.1.0"
 authors = ["Mubelotix <mubelotix@gmail.com>"]
-edition = "2018"
+edition = "2021"
 license = "MIT"
 description = "A simple and elegant crate for displaying progress bars in the terminal. It can estimate and display the remaining time, and includes logging utilities that integrate cleanly with your progress bar output."
 readme = "README.md"
