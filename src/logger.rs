@@ -1,7 +1,23 @@
 use log::{Level, LevelFilter, Log, Metadata, Record, SetLoggerError};
 use crate::{Color, Style, CURRENT_PROGRESS_BAR};
 
-#[derive(Default, Clone, Copy)]
+struct StdoutLogger;
+
+impl log::Log for StdoutLogger {
+    fn enabled(&self, metadata: &Metadata) -> bool {
+        metadata.level() <= log::max_level()
+    }
+
+    fn log(&self, record: &Record) {
+        if self.enabled(record.metadata()) {
+            println!("{} {}", record.level(), record.args());
+        }
+    }
+
+    fn flush(&self) {}
+}
+
+#[derive(Clone, Copy)]
 pub enum InnerLogger {
     /// A main logger will always be used.
     /// 
@@ -15,18 +31,27 @@ pub enum InnerLogger {
     /// When there is no progress bar, the provided logger will be used.
     Fallback(&'static dyn Log),
 
+    /// No inner logger is set.
+    /// 
+    /// When a progress bar is active, logs will be displayed using [`ProgressBar::print_info`].
+    /// When there is no progress bar, logs will NOT be printed. If you would like them to be printed to stdout, use [`InnerLogger::stdout_fallback`].
+    None,
+}
+
+impl InnerLogger {
     /// No inner logger is set but logs will still always be printed.
     /// 
     /// When a progress bar is active, logs will be displayed using [`ProgressBar::print_info`].
     /// When there is no progress bar, logs will be printed to stdout.
-    #[default]
-    Stdout,
+    fn stdout_fallback() -> Self {
+        InnerLogger::Fallback(&StdoutLogger)
+    }
+}
 
-    /// No inner logger is set.
-    /// 
-    /// When a progress bar is active, logs will be displayed using [`ProgressBar::print_info`].
-    /// When there is no progress bar, logs will NOT be printed.
-    None,
+impl Default for InnerLogger {
+    fn default() -> Self {
+        Self::stdout_fallback()
+    }
 }
 
 impl<L: Log + 'static> From<L> for InnerLogger {
@@ -45,7 +70,6 @@ impl log::Log for ProgressBarLogger {
                 Ok(Some(_)) => true,
                 Ok(None) | Err(_) => inner.enabled(metadata),
             }
-            InnerLogger::Stdout => true,
             InnerLogger::None => matches!(CURRENT_PROGRESS_BAR.lock().as_deref(), Ok(Some(_))),
         }
     }
@@ -69,7 +93,6 @@ impl log::Log for ProgressBarLogger {
                 Ok(None) | Err(_) => match inner {
                     InnerLogger::Main(_) => unreachable!(),
                     InnerLogger::Fallback(inner) => inner.log(record),
-                    InnerLogger::Stdout => println!("{} {}", record.level(), record.args()),
                     InnerLogger::None => (),
                 },
             },
