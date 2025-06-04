@@ -6,9 +6,19 @@ fn test() {
     use log::*;
     use std::thread::sleep;
     use std::time::Duration;
+    use env_logger::Env;
 
-    init_logger().unwrap();
-    info!("You can log before the progress bar is initialized");
+    let fallback = env_logger::Builder::from_env(Env::default()).build();
+    let fallback = &*Box::leak(Box::new(fallback));
+
+    init_logger_with_options(Some(fallback), LevelFilter::Trace, |r| fallback.matches(r)).unwrap();
+
+    info!("You can print even when no progress bar is active");
+
+    init_progress_bar(100);
+
+    info!("Loading website https://example.com");
+    warn!("Failed to load https://zefzef.zef");
 
     // if you have 81 pages to load
     init_progress_bar_with_eta(81);

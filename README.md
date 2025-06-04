@@ -52,6 +52,8 @@ finalize_progress_bar();
 Calls to print while a progress bar is active will mess with the output.
 To avoid this, you can use the `print_progress_bar_info` function to log messages while the progress bar is active.
 
+#### Basic usage
+
 ```rust
 use progress_bar::*;
 
@@ -81,6 +83,8 @@ info!("Loading website https://example.com");
 warn!("Failed to load https://zefzef.zef");
 ```
 
+#### Integrating with `env_logger`
+
 It is also possible to set another logger as a fallback to handle calls to logging functions when no progress bar is active.
 This fallback logger also gives you control over which messages are logged, as its [log::Log::enabled] function is used even when a progress bar is active.
 
@@ -90,11 +94,9 @@ use env_logger::Env;
 use log::*;
 
 let fallback = env_logger::Builder::from_env(Env::default()).build();
-init_logger_with_fallback(fallback).unwrap();
+let fallback = &*Box::leak(Box::new(fallback));
 
-info!("You can print even when no progress bar is active");
-
-init_progress_bar(100);
+init_logger_with_options(Some(fallback), LevelFilter::Trace, |r| fallback.matches(r)).unwrap();
 
 info!("Loading website https://example.com");
 warn!("Failed to load https://zefzef.zef");
