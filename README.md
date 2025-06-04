@@ -29,7 +29,7 @@ set_progress_bar_action("Loading", Color::Blue, Style::Bold);
 
 for i in 0..81 {
     // load page
-    sleep(Duration::from_millis(500));
+    sleep(Duration::from_millis(100));
 
     // log the result
     if i == 14 {
@@ -85,21 +85,22 @@ warn!("Failed to load https://zefzef.zef");
 
 #### Integrating with `env_logger`
 
-It is also possible to set another logger as a fallback to handle calls to logging functions when no progress bar is active.
-This fallback logger also gives you control over which messages are logged, as its [log::Log::enabled] function is used even when a progress bar is active.
+It is also possible to set another logger to handle calls to logging functions, while 
 
 ```rust
 use progress_bar::*;
 use env_logger::Env;
 use log::*;
 
-let fallback = env_logger::Builder::from_env(Env::default()).build();
-let fallback = &*Box::leak(Box::new(fallback));
-
-init_logger_with_options(Some(fallback), LevelFilter::Trace, |r| fallback.matches(r)).unwrap();
+let inner = env_logger::Builder::from_env(Env::default()).build();
+init_logger_with_inner(inner).unwrap();
 
 info!("Loading website https://example.com");
 warn!("Failed to load https://zefzef.zef");
 ```
+
+<!-- 
+TODO: Show the fallback logger
+-->
 
 License: MIT

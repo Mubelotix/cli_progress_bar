@@ -8,10 +8,8 @@ fn test() {
     use std::time::Duration;
     use env_logger::Env;
 
-    let fallback = env_logger::Builder::from_env(Env::default()).build();
-    let fallback = &*Box::leak(Box::new(fallback));
-
-    init_logger_with_options(Some(fallback), LevelFilter::Trace, |r| fallback.matches(r)).unwrap();
+    let inner = env_logger::Builder::from_env(Env::default()).build();
+    init_logger_with_inner(inner).unwrap();
 
     info!("You can print even when no progress bar is active");
 
@@ -26,7 +24,7 @@ fn test() {
     
     for i in 0..81 {
         // load page
-        sleep(Duration::from_millis(100));
+        sleep(Duration::from_millis(2));
     
         // log the result
         if i == 14 {

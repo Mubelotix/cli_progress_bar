@@ -30,7 +30,7 @@ impl ProgressBar {
     ///
     /// for i in 0..81 {
     ///     // load page
-    ///     thread::sleep(time::Duration::from_millis(50));
+    ///     thread::sleep(time::Duration::from_millis(10));
     /// 
     ///     // log the result
     ///     if i == 14 {

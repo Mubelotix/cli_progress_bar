@@ -10,7 +10,7 @@ fn test() {
     
     for i in 0..81 {
         // load page
-        sleep(Duration::from_millis(100));
+        sleep(Duration::from_millis(2));
     
         // log the result
         if i == 14 {

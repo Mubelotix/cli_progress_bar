@@ -17,7 +17,7 @@ fn test() {
         } else if i == 75 {
             test.print_info("Warning", "empty page here", Color::Yellow, Style::Underlined);
         }
-        thread::sleep(time::Duration::from_millis(50));
+        thread::sleep(time::Duration::from_millis(2));
     }
     test.finalize();
 
@@ -35,7 +35,7 @@ fn test() {
         } else if i == 75 {
             test.print_info("Warning", "empty page here", Color::Yellow, Style::Underlined);
         }
-        thread::sleep(time::Duration::from_millis(50));
+        thread::sleep(time::Duration::from_millis(2));
     }
     test.print_final_info("Loading", "Load complete", Color::LightGreen, Style::Bold);
 }
