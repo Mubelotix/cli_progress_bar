@@ -77,6 +77,8 @@ impl log::Log for ProgressBarLogger {
     fn log(&self, record: &Record) {
         match self.0 {
             InnerLogger::Main(inner) => {
+                print!("\r\x1B[K\r");
+                eprint!("\r\x1B[K\r");
                 inner.log(record);
                 if let Ok(Some(progress_bar)) = CURRENT_PROGRESS_BAR.lock().as_deref() {
                     progress_bar.display();
@@ -92,7 +94,11 @@ impl log::Log for ProgressBarLogger {
                 },
                 Ok(None) | Err(_) => match inner {
                     InnerLogger::Main(_) => unreachable!(),
-                    InnerLogger::Fallback(inner) => inner.log(record),
+                    InnerLogger::Fallback(inner) => {
+                        print!("\r\x1B[K\r");
+                        eprint!("\r\x1B[K\r");
+                        inner.log(record)
+                    },
                     InnerLogger::None => (),
                 },
             },
