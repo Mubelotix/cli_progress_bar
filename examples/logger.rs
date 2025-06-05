@@ -1,7 +1,6 @@
 #![cfg(feature = "logger")]
 
-#[test]
-fn test() {
+fn main() {
     use progress_bar::*;
     use log::*;
     use std::thread::sleep;
@@ -24,7 +23,7 @@ fn test() {
     
     for i in 0..81 {
         // load page
-        sleep(Duration::from_millis(2));
+        sleep(Duration::from_millis(100));
     
         // log the result
         if i == 14 {
